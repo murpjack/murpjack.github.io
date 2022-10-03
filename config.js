@@ -14,9 +14,9 @@ module.exports = {
     summary: `A blog for my software musings.`,
     social: {
       twitter: ``,
-      github: `https://github.com/murpjack`,
+      github: `murpjack`,
       email: ``,
-      linkedin: `https://linkedin.com/in/jackmurphyuk`,
+      linkedin: `jackmurphyuk`,
       facebook: ``,
       instagram: ``,
     },
