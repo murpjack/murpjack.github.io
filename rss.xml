@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Jack Murphy]]></title><description><![CDATA[A blog for my software musings.]]></description><link>https://murpjack.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 03 Oct 2022 16:21:32 GMT</lastBuildDate><item><title><![CDATA[About me]]></title><description><![CDATA[Welcome! This is my blog, where I muse and record some of my software learning.]]></description><link>https://murpjack.github.io/pages/about/</link><guid isPermaLink="false">https://murpjack.github.io/pages/about/</guid><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;Welcome! This is my blog, where I muse and record some of my software learning.&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[Maybes and Decoders in elm]]></title><description><![CDATA[The Maybe value in Elm is useful when parsing a String into a floating point number, or when requesting data that may not exist from a…]]></description><link>https://murpjack.github.io/blog/maybes-and-decoders-elm/</link><guid isPermaLink="false">https://murpjack.github.io/blog/maybes-and-decoders-elm/</guid><pubDate>Tue, 06 Sep 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;The Maybe value in Elm is useful when parsing a String into a floating point number, or when requesting data that may not exist from a server.
+The response data in an Elm app is decoded by an Elm application and the value can then be handled with relative certainty.&lt;/p&gt;
+&lt;p&gt;This example of a Maybe value comes from the Elm documentation.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Elm in the terminal ↓&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;vim&quot;&gt;&lt;pre class=&quot;language-vim&quot;&gt;&lt;code class=&quot;language-vim&quot;&gt;String&lt;span class=&quot;token operator&quot;&gt;.&lt;/span&gt;toFloat
+&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; String &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; Maybe Float
+
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; String&lt;span class=&quot;token operator&quot;&gt;.&lt;/span&gt;toFloat “&lt;span class=&quot;token number&quot;&gt;3.1415&lt;/span&gt;”
+Just &lt;span class=&quot;token number&quot;&gt;3.1415&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Maybe Float
+
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; String&lt;span class=&quot;token operator&quot;&gt;.&lt;/span&gt;toFloat “&lt;span class=&quot;token keyword&quot;&gt;abc&lt;/span&gt;”
+Nothing &lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; Maybe Float&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The string given to &lt;code class=&quot;language-text&quot;&gt;toFloat&lt;/code&gt; may not be a valid number, in which case the output of the toFloat method could be represented by some failure but to say the output is Maybe a float value makes sense.
+A Maybe value can be something or nothing, where both something and nothing cases must be described - generally by using a &lt;code class=&quot;language-text&quot;&gt;case&lt;/code&gt; statement - which is the same as a JS &lt;code class=&quot;language-text&quot;&gt;switch&lt;/code&gt; statement.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Elm ↓&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;elm&quot;&gt;&lt;pre class=&quot;language-elm&quot;&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;maybeFloat&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;
+&lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;toFloat&lt;/span&gt; “&lt;span class=&quot;token number&quot;&gt;3.1415&lt;/span&gt;”
+
+&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;usefulValue&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;
+	&lt;span class=&quot;token keyword&quot;&gt;case&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;maybeFloat&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;of&lt;/span&gt;
+		&lt;span class=&quot;token constant&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;floatValue&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt;
+			&lt;span class=&quot;token hvariable&quot;&gt;floatValue&lt;/span&gt;
+
+		&lt;span class=&quot;token constant&quot;&gt;Nothing&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt;
+			&lt;span class=&quot;token number&quot;&gt;1.0&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This case statement says that in a case where the value is nothing a default value of 1.0 is provided.
+Default values should be meaningful and should make sense.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Elm ↓&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;elm&quot;&gt;&lt;pre class=&quot;language-elm&quot;&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt;
+   &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Just&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt;
+   &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Nothing&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Below is an example of some metadata from a markdown blog post.
+Values brought into an Elm app require decoding into Elm type values.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Markdown blog post&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Markdown ↓&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;markdown&quot;&gt;&lt;pre class=&quot;language-markdown&quot;&gt;&lt;code class=&quot;language-markdown&quot;&gt;&lt;span class=&quot;token hr punctuation&quot;&gt;---&lt;/span&gt;
+{
+ slug: &apos;maybe-decoders-and-updaters-elm&apos;,
+ title: &apos;Maybes, Decoders and updaters in elm&apos;,
+ tags: [&apos;web&apos;],
+ publishDate: &apos;2018-09-12&apos;,
+ description: &apos;This is a blog about Maybe values.&apos;,
+&lt;span class=&quot;token title important&quot;&gt;}
+&lt;span class=&quot;token punctuation&quot;&gt;---&lt;/span&gt;&lt;/span&gt;
+This is a post about Maybe values.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Elm decoder&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Elm ↓&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;elm&quot;&gt;&lt;pre class=&quot;language-elm&quot;&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;-- import Decoder as Decode exposing (Decoder)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt;
+
+
+&lt;span class=&quot;token keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;BlogPostMetadata&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;slug&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;tags&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;List&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;publishDate&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;IsoString&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;token hvariable&quot;&gt;blogPostMetaDecoder&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;BlogPostMetadata&lt;/span&gt;
+&lt;span class=&quot;token hvariable&quot;&gt;blogPostMetaDecoder&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;
+   &lt;span class=&quot;token hvariable&quot;&gt;Decode.map5&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;BlogPostMetadata&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;slug&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;title&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;tags&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.list&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;publishDate&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;description&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A Decoder wraps data coming into an Elm application in a Functor and then tries to translate that data into a valid Elm type value.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;BlogPostMetadata&lt;/code&gt; is a constructor that defines metadata from the markdown file above.
+The markdown data is wrapped in a Decoder called &lt;code class=&quot;language-text&quot;&gt;blogPostMetaDecoder&lt;/code&gt;, which expects certain field values. Given a field name and a decoder, the Decoder should translate the data into an expected Elm value.&lt;/p&gt;
+&lt;p&gt;Each field decoder - Decode.field - is separate so the top level decoder performs a transformation called &lt;code class=&quot;language-text&quot;&gt;map5&lt;/code&gt; which takes 5 Decoder values and returns just one Decoder value. &lt;code class=&quot;language-text&quot;&gt;map&lt;/code&gt; is an important feature of both Maybe and Decoder values.&lt;/p&gt;
+&lt;p&gt;The &lt;code class=&quot;language-text&quot;&gt;Decoder&lt;/code&gt; type definition looks similar to the &lt;code class=&quot;language-text&quot;&gt;Just&lt;/code&gt; branch in a Maybe type.&lt;/p&gt;
+&lt;p&gt;A decoder and a Maybe value perform different functions but each one wraps a value in a functor. This functor is a type of monad.
+A monad Functor has a &lt;code class=&quot;language-text&quot;&gt;map&lt;/code&gt; method and a &lt;code class=&quot;language-text&quot;&gt;bind&lt;/code&gt; method. A wrapped Maybe or Decode value can be transformed using the &lt;code class=&quot;language-text&quot;&gt;map&lt;/code&gt; method available on the monad.
+It may also handle computations that return nested wrapped values - by using a &lt;code class=&quot;language-text&quot;&gt;bind&lt;/code&gt; method. &lt;code class=&quot;language-text&quot;&gt;bind&lt;/code&gt; exists in Elm on Maybe and Decode values as &lt;code class=&quot;language-text&quot;&gt;andThen&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Before learning Elm I wrote a lot of JavaScript and found the &lt;code class=&quot;language-text&quot;&gt;Maybe.map&lt;/code&gt; method confusing as I had only seen &lt;code class=&quot;language-text&quot;&gt;map&lt;/code&gt; used on arrays. The &lt;code class=&quot;language-text&quot;&gt;map&lt;/code&gt; method in each case does much the same thing.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Elm ↓&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;elm&quot;&gt;&lt;pre class=&quot;language-elm&quot;&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;-- Maybe&lt;/span&gt;
+&lt;span class=&quot;token hvariable&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;b&lt;/span&gt;
+
+&lt;span class=&quot;token hvariable&quot;&gt;andThen&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;b&lt;/span&gt;
+
+
+&lt;span class=&quot;token comment&quot;&gt;-- Decoders&lt;/span&gt;
+&lt;span class=&quot;token hvariable&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;value&lt;/span&gt;
+
+&lt;span class=&quot;token hvariable&quot;&gt;andThen&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;b&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;-- Also Decoders. Helpful for dealing with optional fields.&lt;/span&gt;
+&lt;span class=&quot;token hvariable&quot;&gt;maybe&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;-&gt;&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The type signatures in each case are the same apart from the functor wrapping the given value.&lt;/p&gt;
+&lt;h2&gt;Definitions&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;map&lt;/code&gt; -&gt; Given a transformation and a functor-wrapped value,
+output a transformed value wrapped in a functor.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;andThen&lt;/code&gt; -&gt; Given a transformation and a functor-wrapped value,
+escape or flatten the first functor and output another wrapped value.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Elm decoder with an optional field&lt;/strong&gt;
+In the example below, the &lt;code class=&quot;language-text&quot;&gt;authorName&lt;/code&gt; value may not be included in the blog post metadata so in the UI an author’s name may not be displayed. This value is therefore wrapped in both a Decoder functor and also wrapped in a Maybe value functor and will need to be unwrapped from both Decoder and Maybe.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Elm ↓&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;elm&quot;&gt;&lt;pre class=&quot;language-elm&quot;&gt;&lt;code class=&quot;language-elm&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;-- import Decoder as Decode exposing (Decoder)&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;a&lt;/span&gt;
+
+
+&lt;span class=&quot;token keyword&quot;&gt;type&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;alias&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;BlogPostMetadata&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;slug&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;title&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;tags&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;List&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;publishDate&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;IsoString&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;description&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token comment&quot;&gt;-- authorName is an optional field&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;authorName&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Maybe&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;String&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+
+&lt;span class=&quot;token hvariable&quot;&gt;blogPostMetaDecoder&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;Decoder&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;BlogPostMetadata&lt;/span&gt;
+&lt;span class=&quot;token hvariable&quot;&gt;blogPostMetaDecoder&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;
+   &lt;span class=&quot;token hvariable&quot;&gt;Decode.map5&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;BlogPostMetadata&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;slug&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;title&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;tags&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.list&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;publishDate&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;description&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;token comment&quot;&gt;-- Their may not be an author field to decode&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.maybe&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token hvariable&quot;&gt;Decode.field&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;authorName&quot;&lt;/span&gt; &lt;span class=&quot;token hvariable&quot;&gt;Decode.string&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code class=&quot;language-text&quot;&gt;authorName&lt;/code&gt; field is optional and there is no meaningful default value.
+In this particular case &lt;code class=&quot;language-text&quot;&gt;Decode.maybe&lt;/code&gt; is well suited to decoding the field, though if there was a meaningful default value a package like &lt;code class=&quot;language-text&quot;&gt;Json-Decode-Pipeline&lt;/code&gt; could be used to neatly handle a missing value.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://package.elm-lang.org/packages/elm/json/latest/Json-Decode#maybe&quot;&gt;https://package.elm-lang.org/packages/elm/json/latest/Json-Decode#maybe&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://package.elm-lang.org/packages/NoRedInk/elm-json-decode-pipeline/latest/Json-Decode-Pipeline#optional&quot;&gt;https://package.elm-lang.org/packages/NoRedInk/elm-json-decode-pipeline/latest/Json-Decode-Pipeline#optional&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;My reason for writing this article was because I thought it would be useful to understand monads when using Elm, as it is a functional language. I found that understanding monads in great detail is not strictly necessary, however the journey to understanding has prompted me to ask questions at work and read many things. This post became far more practical than I expected.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[第一个博文 - 介绍]]></title><description><![CDATA[…]]></description><link>https://murpjack.github.io/blog/cn/introduction/</link><guid isPermaLink="false">https://murpjack.github.io/blog/cn/introduction/</guid><pubDate>Mon, 04 Oct 2021 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;这段博文是我第一个试图写一个公开可用，中文的东西。
+我很少用我中文能力为了我目前住在英国。&lt;/p&gt;
+&lt;p&gt;最近我生活忙一点儿，那比生活不忙我更喜欢。我希望记载一些事情和东西那否则被不写了。&lt;/p&gt;
+&lt;p&gt;因为我最近很忙，我工作以后太累去锻炼还是跑步还是读书-都我很喜欢和都让我表现得好和眼明心亮。
+我有很多目标但是平时我不开始因为我太担心了失败或者不会成功目标。我越来越同意我应该是井然或‘盡管去做’。引用一个好朋友：“尝试开始某事然后再次停止，比根本不开始要好” - 比如写外国的博客。&lt;/p&gt;
+&lt;p&gt;有意思事件发生的时候我有时候不明白因为平时不同的原因所以我没有充足考虑事件让事件被没记载了。&lt;/p&gt;
+&lt;p&gt;记载是实际的办法了解哪人们说了或做了，也记录重要的事情。我安排写给读者可能幽默和不同的见地。&lt;/p&gt;
+&lt;p&gt;记载也是好办法联系别一种语言。我母语是英文，可是我一直感兴趣语言 - 特别中文。在 2016 年到一年，我第一次出中国了大世面让我自己学中文。我的中文说的在中国提高了，还有在英国在去年的封锁在线学习课本和朋友还有跟老婆看有些功夫电影。我想放松我的意见在中文所以我的普通话水平不限制对话。&lt;/p&gt;
+&lt;p&gt;我希望有助的读者要给我建设性的反馈意见在评论区在下面。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;谢谢读着！再见！&lt;/strong&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[One Year Of JavaScript]]></title><description><![CDATA[At the time of writing this post, I have been a full-time frontend developer for a little over one year. It seemed like a good opportunity…]]></description><link>https://murpjack.github.io/blog/a-year-of-javascript/</link><guid isPermaLink="false">https://murpjack.github.io/blog/a-year-of-javascript/</guid><pubDate>Tue, 01 Oct 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;At the time of writing this post, I have been a full-time frontend developer for a little over one year.&lt;br&gt;
+It seemed like a good opportunity to jot down some thoughts on how the year has been, what I have learned and where I would like to be come this time next year.&lt;/p&gt;
+&lt;h3&gt;Previous experience&lt;/h3&gt;
+&lt;p&gt;When I started working as a full-time frontend dev I had a few months experience using HTML, CSS and JS, as well as a knowledge of Bootstrap. And a little bit of jQuery.&lt;/p&gt;
+&lt;h3&gt;What I thought&lt;/h3&gt;
+&lt;p&gt;There were a few points when I thought I knew a little about frontend web development but there were a lot more times when I felt like I knew nothing because the amount to learn seemed like too much.&lt;/p&gt;
+&lt;h3&gt;How the year has been&lt;/h3&gt;
+&lt;p&gt;Real-world tasks have made me feel more confident in my ability to problem-solve and build applications.
+There have been people around to help with tricky tasks but I have also been left alone to bugfix and maintain the JavaScript for a large interactive selling page, with plenty of legacy code.&lt;/p&gt;
+&lt;h3&gt;Resources I recommend&lt;/h3&gt;
+&lt;p&gt;This is just a VERY small list of things I incorporate into each month:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Technical books - Code complete is a great resource. There are many others including the O’Reilly series&lt;/li&gt;
+&lt;li&gt;‘Javascript/ReactJs Weekly’ circular email - keep up with the world of JS&lt;/li&gt;
+&lt;li&gt;Meetups - Important!! A great chance to learn from others and meet local devs and network.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Some advice&lt;/h3&gt;
+&lt;p&gt;I have had input and advice from people with experience. Here are some pointers I have drawn from this year:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Ask questions&lt;/strong&gt;&lt;br&gt;
+You are expected to get good at problem solving, a lot of which will be independent. You will not remember everything because you are not Superman or an elephant(elephants never forget, btw) and you may not be able to troubleshoot an issue in a reasonable timescale, at which point asking the question is a smart decision.
+Go for a walk. A few minutes away from your screen allows you to view a problem with fresh eyes.&lt;br&gt;
+I noticed a pattern in the type of question I asked -
+“have you tried [insert straightforward check]?” Or something similar. The solution to most problems is usually logical. Break it down… Ask yourself the question first and action the answer you would give. (Taking a break will help with asking better questions)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Right tools for the job&lt;/strong&gt;&lt;br&gt;
+You may be confident using a technology, but there may be something out there waiting for you that will better suit your end product. It never hurts to see what’s out there.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Measure twice, cut once&lt;/strong&gt;&lt;br&gt;
+Don’t rush into a project without first having a sound understanding of what is needed
+“If the foundation [of a house] hasn’t been laid well or the planning is inadequate, the best you can do during construction is to keep damage to a minimum.”&lt;br&gt;
+-Steve McConnell, Code Complete&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;MVP (minimum viable product), start something and build upwards&lt;/strong&gt;&lt;br&gt;
+Only start something you can finish. Release something basic and functional, THEN fix any bugs, add functionality and develop features. The longer a project is open and unfinished, the more likely it is for any original plan to drift away down stream.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;What next&lt;/h3&gt;
+&lt;p&gt;I am now familiar with Javascript. I will continue to improve using React.Js this year and maybe explore some server-side Javascript(Node).&lt;/p&gt;</content:encoded></item><item><title><![CDATA[SignalR vs. Socket.IO]]></title><description><![CDATA[SignalR is a Microsoft service for web applications. It is a library which allows a server-side component to interact with a corresponding…]]></description><link>https://murpjack.github.io/blog/signalr-vs-socketio/</link><guid isPermaLink="false">https://murpjack.github.io/blog/signalr-vs-socketio/</guid><pubDate>Wed, 19 Jun 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;SignalR is a Microsoft service for web applications. It is a library which allows a server-side component to interact with a corresponding client-side component. SignalR uses websockets to push notifications from server to client.&lt;/p&gt;
+&lt;p&gt;Imagine two students being naughty in their teacherless classroom. (Shocking :o ) A third student acts as a lookout and shouts “teacher’s coming” only when the teacher is actually coming back, so the first and second students can keep on playing without keeping an eye on the door.&lt;/p&gt;
+&lt;h3&gt;For example…&lt;/h3&gt;
+&lt;p&gt;Real-world uses of the SignalR library could be a messenger app that updates when you are typing, a flight site - like Skyscanner taking bookings, or an e-commerce site, displaying different products.&lt;/p&gt;
+&lt;h3&gt;Is it useful?&lt;/h3&gt;
+&lt;p&gt;SignalR only talks to the client-side of a web application when it notices an update. It sends notifications in real-time. This is useful as it saves the application from fetching data from the server on a set interval (polling) and looking for any differences.&lt;/p&gt;
+&lt;h3&gt;Is SignalR my only hope?&lt;/h3&gt;
+&lt;p&gt;There are plenty of alternatives to Microsoft’s SignalR, some attracting favourable reviews. SocketIO is an alternative as are NodeJS, Pusher, used by Groupon, and Google’s Cloud messaging service - Pub/Sub.
+It is worth noting SignalR.net core is a free open-source library that works on both linux and Windows and is preferable to SignalR.net, which requires a Microsoft system.
+&lt;a href=&quot;https://stackshare.io/stackups/pusher-vs-signalr-vs-socket-io&quot;&gt;Stackshare&lt;/a&gt; offers an overview of some popular services.&lt;/p&gt;
+&lt;h3&gt;Verdict&lt;/h3&gt;
+&lt;h4&gt;SocketIO&lt;/h4&gt;
+&lt;p&gt;The SocketIO Api comes well documented and includes an easy-to-follow tutorial for setting up a “Hello World” chat application. The server-side logic can be written in a few different languages, including Javascript :), that are documented on their site.&lt;/p&gt;
+&lt;h4&gt;SignalR&lt;/h4&gt;
+&lt;p&gt;Microsoft have included in SignalR, in the ‘ASP.net core v2.2’ Github repository, a number of helpful example projects and that the SignalR documentation is relatively clear and concise.
+It is also worth mentioning that if using SignalR for app development, there are well-supported, up-to-date libraries that work with SignalR.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[The state of React in 2019]]></title><description><![CDATA[React is a popular library for building interfaces. In a broad stroke it separates creation and rendering of elements in the DOM. This…]]></description><link>https://murpjack.github.io/blog/the-state-of-react-in-2019/</link><guid isPermaLink="false">https://murpjack.github.io/blog/the-state-of-react-in-2019/</guid><pubDate>Thu, 28 Mar 2019 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;React is a popular library for building interfaces. In a broad stroke it separates creation and rendering of elements in the DOM. This offers notable performance gains.
+React encourages breaking elements into smaller components, which can make large applications more robust and scalable.&lt;/p&gt;
+&lt;h2&gt;How does React pass data to components?&lt;/h2&gt;
+&lt;p&gt;React components contain different ways to pass in and handle the data we need. The two main ways to hand data to a component are to add properties - that is, &lt;strong&gt;props&lt;/strong&gt; - or to define its &lt;strong&gt;state&lt;/strong&gt;.&lt;/p&gt;
+&lt;h2&gt;What is a prop?&lt;/h2&gt;
+&lt;p&gt;Components can be passed parameters on creation. These parameters are called props and work in a similar way to arguments passed to a vanilla JavaScript function.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;Cat&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; image&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; name &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;div className&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;animal&quot;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+      &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;img src&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;image&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+      &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;name&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;span&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+    &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; component &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Cat image&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;./tabby.jpg&quot;&lt;/span&gt; name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Tabby&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+ReactDOM&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;component&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; document&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;reactContainer&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;What is a state?&lt;/h2&gt;
+&lt;p&gt;A component’s state is essentially a local-scoped object that can change and be updated. It can only be accessed within the scope of the individual component.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;  &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;WeatherApp&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;React&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;Component&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;props&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;props&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;state &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        temperature&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+          current&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;getTemperature&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token function&quot;&gt;getTemperature&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token function&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+          &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+            &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;h1&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;The current temperature is &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;state&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;temperature&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;current&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;h1&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+          &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;div&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The data passed to &lt;strong&gt;WeatherApp&lt;/strong&gt; comes from its state, which gets updated by &lt;strong&gt;getTemperature()&lt;/strong&gt;. For more information on using React with states I recommend the &lt;a href=&quot;https://reactjs.org/docs/state-and-lifecycle.html&quot;&gt;official documentation&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;What are the differences?&lt;/h2&gt;
+&lt;p&gt;The difference between state and props of a component is that the state of a component can be changed; the properties of a component cannot be changed from inside the component.
+Updates to the props of a component must come from being passed new values.&lt;/p&gt;
+&lt;h2&gt;When should I use state in my application?&lt;/h2&gt;
+&lt;p&gt;There are different ways to organize components. One approach is to split components into presentational and container components.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Presentational components&lt;/strong&gt; - are concerned with displaying UI and where necessary receiving data for use elsewhere in an App.&lt;br&gt;
+‘[presentational components should] receive data as props and send data to their parent component via callback function properties.’&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Container components&lt;/strong&gt; - are components that connect presentational components to the data.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Dan Abramov, co-creator of Redux, cautions against dogmatically following this approach but it may suit certain situations.&lt;br&gt;
+I see it as a useful addition to your react programming toolbox.&lt;/p&gt;
+&lt;p&gt;I hope this post has proved helpful. The key point I took from writing this post is that, as with most things in life, it pays to &lt;strong&gt;stop&lt;/strong&gt; and know &lt;strong&gt;what you are trying to achieve&lt;/strong&gt; and &lt;strong&gt;what tools best serve this end&lt;/strong&gt; all before starting a project.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Optimised Selecting and Styling using vanilla JS]]></title><description><![CDATA[This week I have been going through some old code and trying to improve page performance. One significant way to improve performance on a…]]></description><link>https://murpjack.github.io/blog/optimised-selecting-and-styling-in-js/</link><guid isPermaLink="false">https://murpjack.github.io/blog/optimised-selecting-and-styling-in-js/</guid><pubDate>Fri, 28 Dec 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;This week I have been going through some old code and trying to improve page performance.&lt;br&gt;
+One significant way to improve performance on a web page or application is by looking at interactions between any javascript and the DOM. This can be a way to make quick improvements to overall performance on a site.&lt;/p&gt;
+&lt;p&gt;Google offers a tool called &lt;em&gt;testmysite&lt;/em&gt;, which does just that. They let you know site speed and offer improvements.&lt;br&gt;
+&lt;a href=&quot;https://www.thinkwithgoogle.com/intl/en-gb/feature/testmysite&quot;&gt;https://www.thinkwithgoogle.com/intl/en-gb/feature/testmysite&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Also, JSperf (&lt;a href=&quot;https://jsperf.com/&quot;&gt;https://jsperf.com/&lt;/a&gt;) allows you to see how fast different cases perform on different browsers.&lt;br&gt;
+You can find test cases for basic methods and ideas with a cursory search and adding jsperf to your query.&lt;/p&gt;
+&lt;p&gt;This article is just a few ways to edit styles/ select elements in the DOM using javascript and css. In no particular order here are some ideas:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Use CSS selectors to style elements&lt;/strong&gt;&lt;br&gt;
+Dynamically styling the odd DOM element is unavoidable. For these occasions updating we can add/remove classes and use nested or relative css selectors to control any changes.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;JS&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;js&quot;&gt;&lt;pre class=&quot;language-js&quot;&gt;&lt;code class=&quot;language-js&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; container &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; document&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getElementsByClassName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;container&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;let&lt;/span&gt; containerArrow &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; container&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;.container:after&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+container&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;style&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;border &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;2px solid red&quot;&lt;/span&gt;
+container&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;style&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;color &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;red&quot;&lt;/span&gt;
+container&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;style&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;marginTop &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;10px&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Alternatively we can achieve the same result by styling this container and pseudo using css a class.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;CSS&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;css&quot;&gt;&lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token selector&quot;&gt;.container&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 2px solid black&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 0px&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token selector&quot;&gt;.container:after&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; black&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token selector&quot;&gt;.container--error&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 2px solid red&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;margin-top&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 10px&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token selector&quot;&gt;.container--error:after&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; red&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;By using class styles, stored in css, it is more clear what our is happening too.&lt;br&gt;
+Here is a list of selectors to get you started:&lt;br&gt;
+&lt;a href=&quot;https://www.w3schools.com/cssref/css_selectors.asp&quot;&gt;https://www.w3schools.com/cssref/css_selectors.asp&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Select an ID, node or class and traverse&lt;/strong&gt;&lt;br&gt;
+According to a few jsperf tests the best way to select an element is by selecting an object by its ID or node (eg. div, or table), or class and traversing to nearby elements.&lt;br&gt;
+The reason that this is better than selecting individual elements is that there is just one interaction between the DOM and javascript script.&lt;br&gt;
+&lt;a href=&quot;https://javascript.info/dom-navigation&quot;&gt;https://javascript.info/dom-navigation&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Store references to DOM objects in variables&lt;/strong&gt;&lt;br&gt;
+If you plan to select an element more than than once you should consider storing a reference of it in a variable. This means that your javascript know what is looking for and where it can find it.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;This article only covers a couple of ways to be more performant, and is by no means exhaustive. Please leave a comment below with any other suggestions.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[Using Aspect Ratio in CSS]]></title><description><![CDATA[The aspect ratio of an element describes the proportional relationship between its width and its height.
+Depending on the device you are…]]></description><link>https://murpjack.github.io/blog/css-aspect-ratio/</link><guid isPermaLink="false">https://murpjack.github.io/blog/css-aspect-ratio/</guid><pubDate>Wed, 12 Sep 2018 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;The aspect ratio of an element describes the proportional relationship between its width and its height.
+Depending on the device you are using to access a responsive web page the content may be a different size. The same content will most likely need to keep its
+aspect ratio whatever the device so that the content makes sense and looks good. It is all about looking good.&lt;/p&gt;
+&lt;p&gt;In front end web development there are different ways to determine the aspect ratio of an element. These include defining height/width in ems and defining the&lt;br&gt;
+font-size of a given element and using viewport width, vw to style responsively.&lt;/p&gt;
+&lt;p&gt;There are many mixins for sass, which make light work of aspect ratios.
+This post is to briefly explain a way to achieve a scalable image using the :before pseudo class and parent and its child element.&lt;/p&gt;
+&lt;p&gt;Let’s use two separate div elements, one called &lt;em&gt;.image&lt;/em&gt;, and inside of that another, &lt;em&gt;.image\&lt;/em&gt;_content_.&lt;/p&gt;
+&lt;p&gt;The goal here is to position .image ‘relatively’ so that it will take on a parental role.
+We want our &lt;em&gt;.image\&lt;/em&gt;_content_ to completely fill &lt;em&gt;.image&lt;/em&gt;, which can be done by telling &lt;em&gt;.image\&lt;/em&gt;_content_ to have a ‘position: absolute’ and telling it to begin at each side of the &lt;em&gt;.image&lt;/em&gt; div.
+Next we will add a background-image too.
+We will make our &lt;em&gt;.image:before&lt;/em&gt; class have ‘width: 100%’ and instruct it that it has content. Both our &lt;em&gt;.image\&lt;/em&gt;_content_ and &lt;em&gt;:before&lt;/em&gt; class need to be ‘block’ elements.
+By adding padding-top to the &lt;em&gt;.image:before&lt;/em&gt;, we determine the height of &lt;em&gt;.image\&lt;/em&gt;_content_ and its background-image.&lt;/p&gt;
+&lt;p&gt;All that is left to do is to set the width of &lt;em&gt;.image&lt;/em&gt; now that &lt;em&gt;.image\&lt;/em&gt;_content_ fills it and is set to the correct aspect-ratio.
+See below for a working example &amp;#x26;darr. :point_down:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;HTML&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;html&quot;&gt;&lt;pre class=&quot;language-html&quot;&gt;&lt;code class=&quot;language-html&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;image&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;token attr-value&quot;&gt;&lt;span class=&quot;token punctuation attr-equals&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;image__content&lt;span class=&quot;token punctuation&quot;&gt;&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;CSS&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;css&quot;&gt;&lt;pre class=&quot;language-css&quot;&gt;&lt;code class=&quot;language-css&quot;&gt;&lt;span class=&quot;token selector&quot;&gt;.image&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; relative&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 40%&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token selector&quot;&gt;.image:before&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; block&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 100%&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;padding-top&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 77%&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;/*padding-top = height/width x 100  */&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token selector&quot;&gt;.image__content&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; block&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;position&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; absolute&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;top&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 0&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;bottom&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 0&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 0&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; 0&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;background-image&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token url&quot;&gt;&lt;span class=&quot;token function&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string url&quot;&gt;&quot;https://lh3.google.com/u/0/d/1M2D3jyM95cnEho6Q7RK6PAy7-QD5PQHg=w1920-h956-iv1&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;background-size&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; contain&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;background-repeat&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; no-repeat&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token property&quot;&gt;background-position&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; center&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content:encoded></item></channel></rss>
