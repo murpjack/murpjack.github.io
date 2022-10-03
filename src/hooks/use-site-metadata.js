@@ -1,5 +1,5 @@
 // @flow strict
-import { useStaticQuery, graphql } from 'gatsby';
+import { useStaticQuery, graphql } from "gatsby"
 
 const useSiteMetadata = () => {
   const { site } = useStaticQuery(
@@ -12,17 +12,16 @@ const useSiteMetadata = () => {
               name
             }
             social {
-              twitter
               github
-              email
+              linkedin
             }
           }
         }
       }
     `
-  );
+  )
 
-  return site.siteMetadata;
-};
+  return site.siteMetadata
+}
 
-export default useSiteMetadata;
+export default useSiteMetadata

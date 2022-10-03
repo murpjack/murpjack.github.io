@@ -1,24 +1,24 @@
-'use strict';
+"use strict"
 
 module.exports = {
-  url: `https://abhaynikam.github.io/gatsby-nice-blog/`,
-  description: `A nice starter blog post boilerplate template built using Gatsby.`,
-  pathPrefix: '/',
-  title: `Nice Blogs`,
-  disqusShortname: '',
+  url: `https://murpjack.github.io/`,
+  description: `A blog for my software musings.`,
+  pathPrefix: "/",
+  title: `Jack Murphy`,
+  disqusShortname: "murpjack",
   postsPerPage: 15,
-  googleAnalyticsId: '',
+  googleAnalyticsId: "",
   useKatex: false,
   author: {
-    name: `Abhay Nikam`,
-    summary: `, Ruby on Rails and Frontend developer from Pune, India.`,
+    name: `Jack Murphy`,
+    summary: `A blog for my software musings.`,
     social: {
-      twitter: `abhaynikam13`,
-      github: `abhaynikam`,
-      email: `nikam.abhay1@gmail.com`,
-      linkedin: `abhaynikam`,
+      twitter: ``,
+      github: `https://github.com/murpjack`,
+      email: ``,
+      linkedin: `https://linkedin.com/in/jackmurphyuk`,
       facebook: ``,
       instagram: ``,
     },
-  }
-};
+  },
+}

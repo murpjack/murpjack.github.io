@@ -1,5 +1,4 @@
-
-const siteConfig = require('./config.js');
+const siteConfig = require("./config.js")
 
 module.exports = {
   siteMetadata: {
@@ -62,17 +61,17 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `Gatsby Starter Blog`,
-        short_name: `GatsbyJS`,
+        name: `Jack Murphy Blog`,
+        short_name: `murpjack`,
         start_url: `/`,
-        background_color: `#ffffff`,
-        theme_color: `#663399`,
+        background_color: `#fefcf8`,
+        theme_color: `#ea4444`,
         display: `minimal-ui`,
-        icon: `content/assets/gatsby-icon.png`,
+        icon: `content/assets/icons/icon-128.png`,
       },
     },
     `gatsby-plugin-react-helmet`,
-    'gatsby-plugin-dark-mode',
+    "gatsby-plugin-dark-mode",
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

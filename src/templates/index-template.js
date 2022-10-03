@@ -1,22 +1,22 @@
-import React from "react";
-import { Link, graphql } from "gatsby";
+import React from "react"
+import { Link, graphql } from "gatsby"
 
-import Bio from "../components/bio";
-import Layout from "../components/layout";
-import SEO from "../components/seo";
-import Pagination from "../components/pagination";
+import Bio from "../components/bio"
+import Layout from "../components/layout"
+import SEO from "../components/seo"
+import Pagination from "../components/pagination"
 
 const BlogIndex = ({ data, location, pageContext }) => {
-  const siteTitle = data.site.siteMetadata.title;
-  const { edges } = data.allMarkdownRemark;
+  const siteTitle = data.site.siteMetadata.title
+  const { edges } = data.allMarkdownRemark
   const {
     currentPage,
     hasNextPage,
     hasPrevPage,
     prevPagePath,
-    nextPagePath
-  } = pageContext;
-  const currentPageInfo = currentPage > 0 ? `Page ${currentPage}` : '';
+    nextPagePath,
+  } = pageContext
+  const currentPageInfo = currentPage > 0 ? `Page ${currentPage}` : ""
 
   if (edges.length === 0) {
     return (
@@ -70,9 +70,9 @@ export const query = graphql`
       }
     }
     allMarkdownRemark(
-      limit: $postsLimit,
-      skip: $postsOffset,
-      filter: { frontmatter: { template: { eq: "post" } } },
+      limit: $postsLimit
+      skip: $postsOffset
+      filter: { frontmatter: { template: { eq: "post" } } }
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       edges {
@@ -82,7 +82,7 @@ export const query = graphql`
             slug
           }
           frontmatter {
-            date(formatString: "MMMM DD, YYYY")
+            date(formatString: "DD MMMM YYYY")
             title
             description
           }
